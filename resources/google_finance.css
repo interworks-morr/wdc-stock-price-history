@@ -1,0 +1,60 @@
+/* tags */
+label
+{
+	display: block;
+}
+input[type="text"]
+{
+	background-color: #bebebe;
+	border: 1px solid #454545;
+	border-radius: 3px;
+	color: #454545;
+	font-size: 14px;
+	font-weight: 300;
+	margin: 0 0 10px;
+	padding: 10px;
+}
+
+
+/* classes */
+.btn
+{
+	clear: both;
+	float: right;
+	margin-top: 5px;
+}
+.container > .container
+{
+	padding: 0;
+	width: 500px;
+}
+.footer
+{
+	background-color: #eaebe4;
+	bottom: 0;
+	height: 30px;
+	position: fixed;
+	width: 100%;
+}
+
+
+/* autocomplete-specific styles */
+input[type="text"].ui-autocomplete-input
+{
+	width: 500px;
+}
+.ui-widget-content
+{
+	color: #b0ac94;
+}
+.ui-state-hover, 
+.ui-widget-content .ui-state-hover, 
+.ui-widget-header .ui-state-hover, 
+.ui-state-focus, 
+.ui-widget-content .ui-state-focus, 
+.ui-widget-header .ui-state-focus
+{
+	background: #ecede5;
+	border: 1px solid #b0ac94;
+	color: #000000;
+}

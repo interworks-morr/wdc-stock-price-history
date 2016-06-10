@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Google Finance Stock Ticker History</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css">
+		<link rel="stylesheet" href="/resources/wdc.css" />
+		<link rel="stylesheet" href="/resources/google_finance.css" />
+		<script src="//code.jquery.com/jquery-1.11.1.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://connectors.tableau.com/libs/tableauwdc-2.0.0-beta.js"></script>
+		<script src="wdc.js"></script>
+		<script>
+			$(function() {
+				//event handlers
+				function formFieldOnChange()
+				{
+					//set up local vars
+					var requiredFields = ["#ticker","#startdate","#enddate"];
+					var filled = true;
+					
+					//check each required field
+					for(var i=0; i<requiredFields.length; i++)
+					{
+						if($(requiredFields[i]).val().length == 0)
+						{
+							filled = false;
+						}
+					}
+					
+					if(filled)
+					{
+						$("#submitButton").prop("disabled",false);
+					}
+					else
+					{
+						$("#submitButton").prop("disabled",true);
+					}
+				}
+				
+				//auto-complete functionality
+				function getAutoComplete(request,response)
+				{
+					var url = "autocomplete.php?term=" + request.term;
+					$.getJSON(url,function (data){response(data)});
+				}
+				
+				//onload functionality
+				function initialize()
+				{
+					//set up auto-complete functionality for ticker text box
+					$("#ticker").autocomplete({source:getAutoComplete,select:formFieldOnChange,});
+					
+					//add form validation to required fields
+					$("#startdate").change(formFieldOnChange);
+					$("#startdate").keyup(formFieldOnChange);
+					$("#enddate").change(formFieldOnChange);
+					$("#enddate").keyup(formFieldOnChange);
+					
+					//disable the submit button until a ticker value is entered
+					formFieldOnChange();
+					
+					//add datepicker functionality
+					$("#startdate").datepicker();
+					$("#startdate").datepicker('setDate', "-15y");
+					$("#enddate").datepicker();
+					$("#enddate").datepicker('setDate', new Date());
+				}
+				$(document).ready(initialize);
+			});
+		</script>
+	</head>
+	<body>
+		<div class="navbar navbar-default">
+			<a class="navbar-wdc" href="/">
+				<img id="wdc-logo-left" src="/resources/WDC_Logo.png" />
+				<div id="wdc-logo-right">
+					<img src="/resources/WDC_Logo_Header.png" />
+					<span>Google Finance Stock Ticker History</span>
+				</div>
+			</a>
+			<a class="navbar-brand" href="http://www.interworks.com">
+				<img src="https://www.interworks.com/logo/images/logo.png" />
+			</a>
+			<div class="navbar-border">
+				<img src="/resources/WDC_Border.png" />
+			</div>
+		</div>
+		<div class="container">
+			<div class="alert alert-danger warning-msg" id="tableau-warning-msg" style="display:none;">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<b>Whoa!</b> We've detected you are loading this in a browser window.<br/>Please load this window from Tableau to use the
+				<a href="http://onlinehelp.tableau.com/current/pro/online/windows/en-us/help.htm#examples_web_data_connector.html" target="_blank">Web Data Connector</a>.
+			</div>
+			
+			<noscript>
+				<div class="alert alert-danger warning-msg" id="noscript-warning">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<em>Warning:</em>You need javascript enabled for Tableau Web Data Connectors to function.
+				</div>
+			</noscript>
+			
+			<!-- the good stuff -->
+			<form class="container">
+				<div class="ui-widget">
+					<label for="ticker">Ticker Symbol: </label>
+					<input type="text" id="ticker">
+				</div>
+				
+				<div>
+					<label for="startdate">Start Date: </label>
+					<input type="text" id="startdate">
+				</div>
+				
+				<div>
+					<label for="enddate">End Date: </label>
+					<input type="text" id="enddate">
+				</div>
+				
+				<button id="submitButton" type="button" class="btn">Get Ticker Data</button>
+			</form>
+		</div>
+		
+		<footer class="footer">
+			<div class="navbar-border">
+				<img src="/resources/WDC_Border.png" />
+			</div>
+			<div class="container">
+				<p class="text-muted">All data is &copy;<a href="https://www.google.com/finance" target="_blank">Google Finance</a>. Please refer to the <a href="https://www.google.com/intl/en/policies/terms/?ei=zXRZV-iqHoX-mAGHwpvQAQ" target="_blank">TOS</a> for usage terms.</p>
+			</div>
+		</footer>
+	</body>
+</html>
